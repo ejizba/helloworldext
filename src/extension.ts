@@ -45,7 +45,7 @@ async function zipDirectory(folderPath: string): Promise<string> {
     }
 
     // tslint:disable-next-line:no-unsafe-any
-    const paths: string[] = await globGitignore('**/*', { cwd: folderPath, dot: true, ignore, absolute: true });
+    const paths: string[] = await globGitignore('**/*', { cwd: folderPath, dot: true, ignore });
 
     const zipFilePath: string = path.join(os.tmpdir(), 'test.zip');
 
@@ -56,7 +56,7 @@ async function zipDirectory(folderPath: string): Promise<string> {
         const zipper: archiver.Archiver = archiver('zip', { zlib: { level: 9 } });
 
         for (const p of paths) {
-            zipper.file(p, { name: path.relative(folderPath, p) });
+            zipper.file(path.join(folderPath, p), { name: p });
         }
 
         zipper.on('error', reject);
