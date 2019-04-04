@@ -12,17 +12,19 @@ export function activate(context: vscode.ExtensionContext) {
     // This line of code will only be executed once when your extension is activated
     console.log('Congratulations, your extension "helloworld" is now active!');
 
+    const tree = new HelloWorldTree();
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
+    let disposable = vscode.commands.registerCommand('extension.sayHello', async (node) => {
         // The code you place here will be executed every time your command is executed
 
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
+        tree._onDidChangeTreeData.fire(node);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        tree._onDidChangeTreeData.fire(node);
     });
-    
-    context.subscriptions.push(vscode.window.registerTreeDataProvider('helloworldtree1', new HelloWorldTree()));
+
+    context.subscriptions.push(vscode.window.registerTreeDataProvider('helloworldtree1', tree));
     context.subscriptions.push(disposable);
 }
 

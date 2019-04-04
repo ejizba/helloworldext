@@ -37,6 +37,14 @@
                     "name": "helloworldtree1"
                 }
             ]
+        },
+        "menus": {
+            "view/item/context": [
+                {
+                    "command": "extension.sayHello",
+                    "when": "view == helloworldtree1"
+                }
+            ]
         }
     },
     "scripts": {
