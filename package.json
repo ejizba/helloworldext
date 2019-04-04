@@ -10,6 +10,7 @@
         "Other"
     ],
     "activationEvents": [
+        "onView:helloworldtree1",
         "onCommand:extension.sayHello"
     ],
     "main": "./out/extension",
@@ -19,7 +20,24 @@
                 "command": "extension.sayHello",
                 "title": "Hello World"
             }
-        ]
+        ],
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "helloWorld",
+                    "title": "Test",
+                    "icon": "icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "helloWorld": [
+                {
+                    "id": "helloworldtree1",
+                    "name": "helloworldtree1"
+                }
+            ]
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
