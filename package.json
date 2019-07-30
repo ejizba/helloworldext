@@ -17,8 +17,12 @@
     "contributes": {
         "commands": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
+                "command": "extension.incrementAndRefresh",
+                "title": "incrementAndRefresh"
+            },
+            {
+                "command": "extension.refreshWholeTree",
+                "title": "refreshWholeTree"
             }
         ],
         "viewsContainers": {
@@ -35,6 +39,18 @@
                 {
                     "id": "helloworldtree1",
                     "name": "helloworldtree1"
+                }
+            ]
+        },
+        "menus": {
+            "view/item/context": [
+                {
+                    "command": "extension.incrementAndRefresh",
+                    "when": "view == helloworldtree1"
+                },
+                {
+                    "command": "extension.refreshWholeTree",
+                    "when": "view == helloworldtree1"
                 }
             ]
         }

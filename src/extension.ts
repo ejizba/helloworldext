@@ -1,31 +1,45 @@
 'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+
 import * as vscode from 'vscode';
-import { HelloWorldTree } from './helloWorldTree';
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+    const tree = new HelloWorldTree();
+    context.subscriptions.push(vscode.commands.registerCommand('extension.incrementAndRefresh', async (node: Node) => {
+        node.counter += 1;
+        tree._onDidChangeTreeData.fire(node);
+    }));
 
-    // Use the console to output diagnostic information (console.log) and errors (console.error)
-    // This line of code will only be executed once when your extension is activated
-    console.log('Congratulations, your extension "helloworld" is now active!');
+    context.subscriptions.push(vscode.commands.registerCommand('extension.refreshWholeTree', async (node: Node) => {
+        tree._onDidChangeTreeData.fire();
+    }));
 
-    // The command has been defined in the package.json file
-    // Now provide the implementation of the command with  registerCommand
-    // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.sayHello', () => {
-        // The code you place here will be executed every time your command is executed
-
-        // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
-    });
-    
-    context.subscriptions.push(vscode.window.registerTreeDataProvider('helloworldtree1', new HelloWorldTree()));
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(vscode.window.registerTreeDataProvider('helloworldtree1', tree));
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {
+}
+
+class HelloWorldTree implements vscode.TreeDataProvider<Node> {
+    _onDidChangeTreeData: vscode.EventEmitter<Node> = new vscode.EventEmitter<Node>();
+    onDidChangeTreeData: vscode.Event<Node> = this._onDidChangeTreeData.event;
+
+    node1: Node = new Node('1');
+
+    getTreeItem(element: Node): vscode.TreeItem {
+        return element;
+    }
+
+    async getChildren(element?: Node | undefined): Promise<Node[]> {
+        return [this.node1];
+    }
+}
+
+class Node implements vscode.TreeItem {
+    public counter: number = 0;
+
+    constructor(public id: string) { }
+
+    get label(): string {
+        return this.counter.toString();
+    }
 }
