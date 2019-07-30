@@ -1,6 +1,7 @@
 'use strict';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+import * as os from 'os';
 import * as vscode from 'vscode';
 
 // this method is called when your extension is activated
@@ -18,7 +19,20 @@ export function activate(context: vscode.ExtensionContext) {
         // The code you place here will be executed every time your command is executed
 
         // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
+        vscode.window.showInformationMessage(`remoteName: "${vscode.env.remoteName}"`);
+
+        const extension = vscode.extensions.getExtension('test.helloworld');
+        if (extension) {
+            vscode.window.showInformationMessage(`extensionKind: "${extension.extensionKind}"`);
+        }
+
+        let terminalOptions: vscode.TerminalOptions = {};
+        terminalOptions.name = 'todo1';
+        vscode.window.createTerminal(terminalOptions);
+
+        terminalOptions.name = 'todo2';
+        terminalOptions.cwd = vscode.Uri.file(os.homedir());
+        vscode.window.createTerminal(terminalOptions);
     });
 
     context.subscriptions.push(disposable);

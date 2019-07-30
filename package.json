@@ -1,10 +1,11 @@
 {
     "name": "helloworld",
     "displayName": "helloWorld",
+    "publisher": "test",
     "description": "",
     "version": "0.0.1",
     "engines": {
-        "vscode": "^1.29.0"
+        "vscode": "^1.36.0"
     },
     "categories": [
         "Other"
@@ -26,12 +27,14 @@
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
         "postinstall": "node ./node_modules/vscode/bin/install",
+        "package": "vsce package",
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
         "typescript": "^2.6.1",
         "vscode": "^1.1.21",
         "tslint": "^5.8.0",
+        "vsce": "^1.66.0",
         "@types/node": "^8.10.25",
         "@types/mocha": "^2.2.42"
     }
