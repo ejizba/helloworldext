@@ -1,7 +1,6 @@
 'use strict';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as os from 'os';
 import * as vscode from 'vscode';
 
 // this method is called when your extension is activated
@@ -27,12 +26,22 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         let terminalOptions: vscode.TerminalOptions = {};
-        terminalOptions.name = 'todo1';
-        vscode.window.createTerminal(terminalOptions);
+        try {
+            terminalOptions.name = 'default';
+            vscode.window.createTerminal(terminalOptions);
+        } catch (error) {
+            vscode.window.showErrorMessage(`error: "${error}"`);
+        }
 
-        terminalOptions.name = 'todo2';
-        terminalOptions.cwd = vscode.Uri.file(os.homedir());
-        vscode.window.createTerminal(terminalOptions);
+        try {
+            terminalOptions.name = 'home dir';
+            terminalOptions.cwd = process.platform === 'win32'
+                ? vscode.Uri.file(process.env.USERPROFILE || 'c:\\') :
+                vscode.Uri.file(process.env.HOME || '/');
+            vscode.window.createTerminal(terminalOptions);
+        } catch (error) {
+            vscode.window.showErrorMessage(`error: "${error}"`);
+        }
     });
 
     context.subscriptions.push(disposable);
